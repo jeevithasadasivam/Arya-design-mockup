@@ -16,6 +16,10 @@ extension UIColor {
         return .init(red: 29/255, green: 29/255, blue: 29/255, alpha: 1)
     }
     
+    class var primaryBlue: UIColor {
+        return .init(red: 1/255, green: 166/255, blue: 252/255, alpha: 1)
+    }
+
     class var gradientGrey: UIColor {
         return .init(red: 189/255, green: 189/255, blue: 189/255, alpha: 1)
     }

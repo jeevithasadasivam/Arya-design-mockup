@@ -9,6 +9,16 @@ import UIKit
 
 class MessageCell: UITableViewCell {
 
+    @IBOutlet weak var bgView: UIView!
+    
+    @IBOutlet weak var readImage: UIImageView!
+    @IBOutlet weak var textLbl: UILabel!
+    
+    @IBOutlet weak var readImageWidth: NSLayoutConstraint!
+    @IBOutlet weak var bgViewWidth: NSLayoutConstraint!
+    @IBOutlet weak var bgViewTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bgViewLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var timeLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

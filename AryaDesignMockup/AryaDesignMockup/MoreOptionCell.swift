@@ -8,6 +8,8 @@
 import UIKit
 
 class MoreOptionCell: UITableViewCell {
+    @IBOutlet weak var optionImage: UIImageView!
+    @IBOutlet weak var textLbl: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
