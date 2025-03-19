@@ -8,18 +8,24 @@
 import UIKit
 
 class MoreOptionCell: UITableViewCell {
+    @IBOutlet weak var optionImageBgView: UIView!
     @IBOutlet weak var optionImage: UIImageView!
     @IBOutlet weak var textLbl: UILabel!
+    var gradientLayer: CAGradientLayer = CAGradientLayer()
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        textLbl.font = UIFont(name: InterFont.regular, size: 16)
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if optionImageBgView.layer.sublayers?[0] is CAGradientLayer {
+            gradientLayer.frame = self.bounds
+        }
     }
+
 
 }

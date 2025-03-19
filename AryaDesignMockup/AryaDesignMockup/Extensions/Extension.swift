@@ -25,7 +25,8 @@ class Extension {
         return messageJson
     }
     
-    func applyGradient(view: UIImageView, colors: [UIColor], isVertical: Bool) {
+    func applyGradient(view: UIView, colors: [UIColor]) -> UIView {
+        let view = UIView(frame: view.frame)
         let gradientLayer: CAGradientLayer = CAGradientLayer()
         gradientLayer.colors = colors
         gradientLayer.locations = [0.0, 1.0]
@@ -33,64 +34,31 @@ class Extension {
         gradientLayer.endPoint = CGPoint(x: 1.0, y: 1.0)
         gradientLayer.frame = view.bounds
         view.layer.insertSublayer(gradientLayer, at: 0)
+        return view
     }
-    
-//    func addTopBorder(with color: UIColor?, andWidth borderWidth: CGFloat, view: UIView, cornerRadius: CGFloat) {
-//        let border = UIView()
-//        border.backgroundColor = color
-//        border.layer.cornerRadius = cornerRadius
-//        border.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
-//        border.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: borderWidth)
-//        view.addSubview(border)
-//    }
-//    
-//    func addBottomBorder(with color: UIColor?, andWidth borderWidth: CGFloat, view: UIView, cornerRadius: CGFloat) {
-//        let border = UIView()
-//        border.backgroundColor = color
-//        border.layer.cornerRadius = cornerRadius
-//        border.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
-//        border.frame = CGRect(x: 0, y: view.frame.size.height - borderWidth, width: view.frame.size.width, height: borderWidth)
-//        view.addSubview(border)
-//    }
-//    
-//    func addLeftBorder(with color: UIColor?, andWidth borderWidth: CGFloat, view: UIView, cornerRadius: CGFloat) {
-//        let border = UIView()
-//        border.backgroundColor = color
-//        border.layer.cornerRadius = cornerRadius
-//        border.frame = CGRect(x: 0, y: 0, width: borderWidth, height: view.frame.size.height)
-//        border.autoresizingMask = [.flexibleHeight, .flexibleRightMargin]
-//        view.addSubview(border)
-//    }
-//    
-//    func addRightBorder(with color: UIColor?, andWidth borderWidth: CGFloat, view: UIView, cornerRadius: CGFloat) {
-//        let border = UIView()
-//        border.backgroundColor = color
-//        border.layer.cornerRadius = cornerRadius
-//        border.autoresizingMask = [.flexibleHeight, .flexibleLeftMargin]
-//        border.frame = CGRect(x: view.frame.size.width - borderWidth, y: 0, width: borderWidth, height: view.frame.size.height)
-//        view.addSubview(border)
-//    }
+
     func addBorders(withEdges edges: [UIRectEdge],
-                    withColor color: UIColor,
                     cornerRadius: CGFloat,
                     view: UIView) {
-        view.layer.borderColor = color.cgColor
         view.layer.borderWidth = 1
         view.layer.cornerRadius = cornerRadius
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner,.layerMaxXMinYCorner]
+        
         edges.forEach({ edge in
             switch edge {
             case .left:
                 view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
-                
+                view.layer.borderColor = UIColor.primaryBlack.withAlphaComponent(0.1).cgColor
             case .right:
                 view.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-                
+                view.layer.borderColor = UIColor.primaryWhite.withAlphaComponent(0.35).cgColor
             case .top:
                 view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-                
+                view.layer.borderColor = UIColor.primaryBlack.withAlphaComponent(0.1).cgColor
             case .bottom:
                 view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-                
+                view.layer.borderColor = UIColor.primaryWhite.withAlphaComponent(0.35).cgColor
+
             default:
                 break
             }

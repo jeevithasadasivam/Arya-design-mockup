@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var profileImage: UIImageView!
     @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var messageBgView: UIView!
     @IBOutlet weak var messageTextField: UITextField!
     @IBOutlet weak var plusButton: UIButton!
     
@@ -41,8 +42,13 @@ extension ViewController {
         super.viewDidLoad()
         //apply Gradient Color to the Bg view
         applyGradientColor()
-        
-        
+        addBorderToView(view: messageBgView, cornerRadius: 20)
+        profileName.font = UIFont(name: InterFont.semiBold, size: 13)!
+        messageTextField.font = UIFont(name: InterFont.regular, size: 14)!
+        messageTextField.attributedPlaceholder = NSAttributedString(
+            string: "Message",
+            attributes: [NSAttributedString.Key.foregroundColor: UIColor.white]
+        )
     }
 }
 
@@ -53,26 +59,18 @@ extension ViewController {
         let FirstColor =  UIColor(red: 4.0/255.0, green: 141.0/255.0, blue: 245.0/255.0, alpha: 1.0).cgColor
         let secondColor = UIColor(red: 20.0/255.0, green: 168.0/255.0, blue: 246.0/255.0, alpha: 1.0).cgColor
         let thirdColor = UIColor(red: 145.0/255.0, green: 174.0/255.0, blue: 187.0/255.0, alpha: 1.0).cgColor
-        let fourthColor = UIColor(red: 251.0/255.0, green: 218.0/255.0, blue: 137.0/255.0, alpha: 1.0).cgColor
-        
-        // Set the colors and locations for the gradient layer
-        gradientLayer.colors = [FirstColor, fourthColor]
-        gradientLayer.locations = [0.0, 1.0]
-        
-        // Set the start and end points for the gradient layer
+        let fourthColor = UIColor(red: 233/255.0, green: 195/255.0, blue: 156/255.0, alpha: 1.0).cgColor
+        gradientLayer.colors = [FirstColor, secondColor, thirdColor, fourthColor]
+        gradientLayer.locations = [0.0, 0.3, 0.6, 0.8]
         gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
         gradientLayer.endPoint = CGPoint(x: 1.0, y: 1.0)
-        
-        // Set the frame to the layer
         gradientLayer.frame = view.bounds
-        
-        // Add the gradient layer as a sublayer to the background view
         view.layer.insertSublayer(gradientLayer, at: 0)
+        
     }
     
     func addBorderToView(view: UIView, cornerRadius: CGFloat) {
-        Extension().addBorders(withEdges: [.left, .top], withColor: UIColor.primaryBlack.withAlphaComponent(0.1), cornerRadius: cornerRadius, view: view)
-        Extension().addBorders(withEdges: [.right, .bottom], withColor: UIColor.primaryWhite.withAlphaComponent(0.35), cornerRadius: cornerRadius, view: view)
+        Extension().addBorders(withEdges: [.left, .top, .bottom, .right], cornerRadius: cornerRadius, view: view)
     }
     
     func showMoreOptionView() {
@@ -81,7 +79,6 @@ extension ViewController {
             moreOptionVC.modalTransitionStyle = .crossDissolve
             present(moreOptionVC, animated: true)
         }
-
     }
     
 }
@@ -104,9 +101,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         cell.textLbl.text = messageJson[indexPath.row].text
         cell.timeLabel.text = messageJson[indexPath.row].timestamp
-        cell.bgViewWidth.constant = self.messageTableView.frame.width * 0.75
-        cell.bgView.layer.cornerRadius = 14
+        cell.bgViewWidth.constant = self.messageTableView.frame.width * 0.7
         if messageJson[indexPath.row].isSender {
+            cell.textLbl.font = UIFont(name: InterFont.medium, size: 14)
             cell.bgViewLeadingConstraint.isActive = false
             cell.readImage.isHidden = false
             cell.textLbl.textColor = UIColor.primaryBlack
@@ -114,6 +111,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
             cell.timeLabel.textColor = UIColor.primaryBlue
             cell.bgView.backgroundColor = UIColor.primaryWhite
         } else {
+            cell.textLbl.font = UIFont(name: InterFont.regular, size: 14)
             cell.bgView.backgroundColor = UIColor.clear
             cell.textLbl.textColor = UIColor.primaryWhite
             cell.timeLabel.textColor = UIColor.primaryWhite
@@ -126,6 +124,23 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+}
+
+// MARK: - TextField delegate
+extension ViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        
+    }
     
-    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        view.endEditing(true)
+    }
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField.text != "" {
+            sendButton.isHidden = false
+        } else {
+            sendButton.isHidden = true
+        }
+        return true
+    }
 }

@@ -12,7 +12,7 @@ class MoreOptionViewController: UIViewController {
     @IBOutlet weak var moreOptionTableView: UITableView!
     let cellId = "moreOptionCell"
     var moreOptionList = ["Camera", "Photos", "Files", "Audio"]
-    var gradientColor = [[UIColor.gradientGrey, UIColor.gradientDarkGrey], [UIColor.gradientYellow, UIColor.gradientOrange], [UIColor.gradientGreen, UIColor.gradientBeach], [UIColor.gradientPurple, UIColor.gradientBlue]]
+    var gradientColor = [[UIColor.gradientGrey.cgColor, UIColor.gradientDarkGrey.cgColor], [UIColor.gradientYellow.cgColor, UIColor.gradientOrange.cgColor], [UIColor.gradientGreen.cgColor, UIColor.gradientBeach.cgColor], [UIColor.gradientPurple.cgColor, UIColor.gradientBlue.cgColor]]
 
     @IBAction func dissmissView(_ sender: Any) {
         dismiss(animated: true)
@@ -60,18 +60,23 @@ extension MoreOptionViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44
+        return 54
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! MoreOptionCell
         cell.optionImage.image = UIImage(named: moreOptionList[indexPath.row])
         cell.textLbl.text = moreOptionList[indexPath.row]
-        Extension().applyGradient(view: cell.optionImage, colors: gradientColor[indexPath.row], isVertical: true)
+        cell.gradientLayer.locations = [0.0, 1.0]
+        cell.gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+        cell.gradientLayer.endPoint = CGPoint(x: 1.0, y: 1.0)
+        cell.gradientLayer.colors = gradientColor[indexPath.row]
+        cell.gradientLayer.frame = cell.optionImageBgView.bounds
+        cell.optionImageBgView.layer.insertSublayer(cell.gradientLayer, at: 0)
+
         return cell
     }
-    
-    
     
 }
 
